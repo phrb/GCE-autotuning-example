@@ -4,10 +4,9 @@ import argparse
 import logging
 
 import opentuner
-from opentuner.measurement import MeasurementInterface
+from opentuner.measurement import MeasurementInterface, MeasurementDriver
 from opentuner.search.manipulator import ConfigurationManipulator
 from opentuner.search.manipulator import FloatParameter
-from opentuner.measurement import MeasurementClient
 from GCEInterface.interface import GCEInterface
 
 log = logging.getLogger(__name__)
