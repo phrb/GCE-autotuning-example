@@ -41,59 +41,67 @@ parser.add_argument('--interface-name',
                     help     = "The name of your measurement interface.")
 
 class MeasurementClient(MeasurementDriver):
-  def __init__(self,
-               measurement_interface,
-               input_manager,
-               **kwargs):
-    super(MeasurementClient, self).__init__(measurement_interface,
-                                            input_manager,
-                                            **kwargs)
+    def __init__(self,
+                 measurement_interface,
+                 input_manager,
+                 **kwargs):
+        super(MeasurementClient, self).__init__(measurement_interface,
+                                                input_manager,
+                                                **kwargs)
 
-    print self.args
-    self.gce_interface = GCEInterface(zone            = self.args.zone,
-                                      project         = self.args.project,
-                                      repo            = self.args.repo,
-                                      interface_path  = self.args.interface_path,
-                                      interface_name  = self.args.interface_name,
-                                      instance_number = self.args.parallelism)
+        self.gce_interface = GCEInterface(zone            = self.args.zone,
+                                          project         = self.args.project,
+                                          repo            = self.args.repo,
+                                          interface_path  = self.args.interface_path,
+                                          interface_name  = self.args.interface_name,
+                                          instance_number = self.args.parallelism)
 
-    self.gce_interface.create_and_connect_all()
+        self.gce_interface.create_and_connect_all()
 
-  def process_all(self):
-    self.lap_timer()
-    q = self.query_pending_desired_results()
-    desired_results = []
+    def process_all(self):
+        self.lap_timer()
+        q = self.query_pending_desired_results()
+        desired_results = []
 
-    for dr in q.all():
-      if self.claim_desired_result(dr):
-        desired_results.append(dr)
+        for dr in q.all():
+          if self.claim_desired_result(dr):
+            desired_results.append(dr)
 
-    self.run_desired_results(desired_results)
+        self.run_desired_results(desired_results)
 
-  def run_desired_results(self, desired_results):
-    requests = []
+    def rosenbrock(self, x0, x1):
+        val = 100.0 * (x1 - x0 ** 2) ** 2 + (x0 - 1) ** 2
+        return val
 
-    for desired_result in desired_results:
-      desired_result.limit = self.run_time_limit(desired_result)
+    def run_desired_results(self, desired_results):
+        requests = []
 
-      input = self.input_manager.select_input(desired_result)
-      self.session.add(input)
-      self.session.flush()
+        for desired_result in desired_results:
+            desired_result.limit = self.run_time_limit(desired_result)
 
-      log.debug('running desired result %s on input %s', desired_result.id,
-                input.id)
+            input = self.input_manager.select_input(desired_result)
+            self.session.add(input)
+            self.session.flush()
 
-      self.input_manager.before_run(desired_result, input)
+            log.debug('running desired result %s on input %s', desired_result.id,
+                    input.id)
 
-      requests.append((desired_result.configuration,
-                       input,
-                       desired_result.limit))
+            self.input_manager.before_run(desired_result, input)
 
-    results = self.gce_interface.compute_results(requests)
+            requests.append((desired_result.configuration,
+                           input,
+                           desired_result.limit))
 
-    for result, d_result, request in zip(results, desired_results, requests):
-      input = request[1]
-      self.report_result(d_result, result, input)
+        results = self.gce_interface.compute_results(requests)
+
+        for result, d_result, request in zip(results, desired_results, requests):
+            print "Checking: {0} {1} {2}?={3}".format(request[0].data[0],
+                                                      request[0].data[1],
+                                                      result.time,
+                                                      self.rosenbrock(request[0].data[0],
+                                                                      request[0].data[1]))
+            input = request[1]
+            self.report_result(d_result, result, input)
 
 class Rosenbrock(MeasurementInterface):
     def run(self, desired_result, input, limit):
@@ -112,16 +120,8 @@ class Rosenbrock(MeasurementInterface):
                                                      self.args.domain))
         return manipulator
 
-    def program_name(self):
-        return self.args.function
-
-    def program_version(self):
-        return "%dx%d" % (self.args.dimensions, self.args.domain)
-
     def save_final_config(self, configuration):
-        """
-        called at the end of autotuning with the best resultsdb.models.Configuration
-        """
+        self.driver.gce_interface.delete_all()
         print "Final configuration", configuration.data
 
     @classmethod
@@ -133,9 +133,5 @@ class Rosenbrock(MeasurementInterface):
 
 if __name__ == '__main__':
     args = parser.parse_args()
-    if args.function == 'beale':
-        # fixed for this function
-        args.domain = 4.5
-        args.dimensions = 2
     Rosenbrock.main(args)
 
