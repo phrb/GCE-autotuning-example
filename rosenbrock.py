@@ -8,11 +8,13 @@ from opentuner.measurement import MeasurementInterface
 from opentuner.search.manipulator import ConfigurationManipulator
 from opentuner.search.manipulator import FloatParameter
 
-import MeasurementClient
-from MeasurementClient.client import MeasurementClient
-from MeasurementClient.GCEInterface.interface import GCEInterface
+import measurement_client
+from measurement_client.client import MeasurementClient
+from measurement_client.gce_interface.interface import GCEInterface
 
 log = logging.getLogger(__name__)
+
+print measurement_client.argparsers()
 
 parser = argparse.ArgumentParser(parents=opentuner.argparsers())
 parser.add_argument('--dimensions', type=int, default=2,

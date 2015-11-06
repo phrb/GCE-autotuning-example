@@ -1,3 +1,3 @@
-[submodule "MeasurementClient"]
-	path = MeasurementClient
-	url = git@github.com:phrb/MeasurementClient.git
+[submodule "measurement_client"]
+	path = measurement_client
+	url = git@github.com:phrb/measurement_client.git
