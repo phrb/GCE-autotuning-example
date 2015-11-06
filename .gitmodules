@@ -1,0 +1,3 @@
+[submodule "MeasurementClient"]
+	path = MeasurementClient
+	url = git@github.com:phrb/MeasurementClient.git
