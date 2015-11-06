@@ -7,7 +7,7 @@ repo           = "--repo=https://github.com/phrb/GCE-autotuning-example.git"
 project        = "--project=autotuning-1116"
 interface_path = "--interface-path=rosenbrock.py"
 interface_name = "--interface-name=Rosenbrock"
-parallelism    = "--parallelism=8"
+parallelism    = "--parallelism=23"
 results_log    = "--results-log=results.log"
 stop_after     = "--stop-after=200"
 
