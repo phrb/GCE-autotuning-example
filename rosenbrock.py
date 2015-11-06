@@ -95,11 +95,6 @@ class MeasurementClient(MeasurementDriver):
         results = self.gce_interface.compute_results(requests)
 
         for result, d_result, request in zip(results, desired_results, requests):
-            print "Checking: {0} {1} {2}?={3}".format(request[0].data[0],
-                                                      request[0].data[1],
-                                                      result.time,
-                                                      self.rosenbrock(request[0].data[0],
-                                                                      request[0].data[1]))
             input = request[1]
             self.report_result(d_result, result, input)
 
@@ -134,4 +129,3 @@ class Rosenbrock(MeasurementInterface):
 if __name__ == '__main__':
     args = parser.parse_args()
     Rosenbrock.main(args)
-

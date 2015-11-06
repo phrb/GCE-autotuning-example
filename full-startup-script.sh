@@ -4,7 +4,7 @@ echo "[INFO] Starting up Script" > startup.log
 
 cd /
 
-apt-get update &>> startup.log 
+apt-get update &>> startup.log
 apt-get install -y git python-pip python-dev python-matplotlib libsqlite3-dev libfreetype6-dev &>> startup.log
 pip install --upgrade oauth2client google-api-python-client &>> startup.log
 pip install opentuner &>> startup.log
