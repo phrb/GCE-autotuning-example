@@ -2,11 +2,6 @@
 
 echo "[INFO] Starting up Script" > startup.log
 
-
-cd /
-
-# Install Google things for interface
-pip install --upgrade oauth2client google-api-python-client &>> startup.log
 # Clone Measurement Server Repository
 git clone https://github.com/phrb/measurement-server.git &>> startup.log
 
