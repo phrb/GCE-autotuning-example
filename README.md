@@ -13,6 +13,8 @@ project and its submodules run:
 $ git clone --recursive https://github.com/phrb/gce_autotuning_example.git
 ```
 
+To run the example, you have to either copy the [full startup script](https://github.com/phrb/gce_interface/blob/master/startup-script.sh) to this project 
+or build a private image, using the commands in the script.
 Now, you have to change your project name in `run.py` and enable `gcloud` on your machine. Then, you can run:
 
 ```
