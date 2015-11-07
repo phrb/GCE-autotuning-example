@@ -14,9 +14,9 @@ from measurement_client.gce_interface.interface import GCEInterface
 
 log = logging.getLogger(__name__)
 
-print measurement_client.argparsers()
+parsers = opentuner.argparsers() + measurement_client.argparsers()
 
-parser = argparse.ArgumentParser(parents=opentuner.argparsers())
+parser = argparse.ArgumentParser(parents = parsers)
 parser.add_argument('--dimensions', type=int, default=2,
                     help='dimensions for the Rosenbrock function')
 parser.add_argument('--domain', type=float, default=1000,
