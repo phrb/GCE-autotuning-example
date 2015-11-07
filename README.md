@@ -14,14 +14,23 @@ $ git clone --recursive https://github.com/phrb/gce_autotuning_example.git
 ```
 
 To run the example, you have to either copy the [full startup script](https://github.com/phrb/gce_interface/blob/master/startup-script.sh) to this project 
-or build a private image, using the commands in the script.
-Now, you have to change your project name in `run.py` and enable `gcloud` on your machine. Then, you can run:
+or build a private image, using the commands in the script. You also have to install 
+the dependencies that can be found in the startup script. In a Debian Jessie, run:
+
+```
+$ sudo apt-get install git python-pip python-dev python-matplotlib libsqlite3-dev libfreetype6-dev
+$ sudo pip install --upgrade oauth2client google-api-python-client
+$ sudo pip install opentuner
+```
+
+Search for the correspondent packages for different distributions.
+Now you have to change the project name in `run.py` and enable `gcloud` on your machine. Then you can run:
 
 ```
 $ python run.py
 ```
 
-You can pass options directly to the tuner. Check `run.py` or run the following for more information:
+You can also pass options directly to the tuner. Check `run.py` or run the following for more information:
 
 ```
 $ python rosenbrock.py -h
