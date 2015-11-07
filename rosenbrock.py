@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import adddeps
 import argparse
 import logging
 
