@@ -3,7 +3,7 @@
 This repository contains an example application that uses GCE resources and the OpenTuner autotuning framework.
 
 The `MeasurementClient` class is an OpenTuner `MeasurementDriver` that uses an interface to the GCE API
-to send result requests to a server in a GCE virtual machine.
+to send result requests to a server in a GCE virtual machine. The server is hosted in [this repository](https://github.com/phrb/measurement-server).
 
 This git repository contains the `measurement_client` ([repo](https://github.com/phrb/measurement_client))
 and the `gce_interface`([repo](https://github.com/phrb/gce_interface)) as git submodules. To clone this
