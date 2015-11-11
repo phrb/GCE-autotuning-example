@@ -1,3 +1,5 @@
+#! /usr/bin/env python2.7
+
 import os
 
 path = "../opentuner/opentuner/utils/adddeps.py"
